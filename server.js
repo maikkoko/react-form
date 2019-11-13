@@ -1,5 +1,6 @@
 const express = require('express');
 const next = require('next');
+const fetch = require('node-fetch');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -10,7 +11,7 @@ app
   .then(() => {
     const server = express();
 
-    server.get('*', async (req, res) => {
+    server.get('*', (req, res) => {
       return handle(req, res);
     });
 
