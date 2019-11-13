@@ -2,6 +2,7 @@ import React from 'react';
 import fetch from 'isomorphic-fetch';
 
 import Form from '../components/Form';
+import Output from '../components/Output';
 import '../styles/index.css';
 
 const Index = props => {
@@ -19,7 +20,7 @@ const Index = props => {
   return (
     <div className="container mx-auto flex">
       <Form data={data} />
-      <div>Hello</div>
+      <Output />
     </div>
   );
 };

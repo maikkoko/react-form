@@ -1,9 +1,27 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getFormState, setFormField } from '../reducer';
+import { getFormState, setFormField, validateForm } from '../reducer';
 
-const Form = ({ data, formState, setFormField }) => {
+const DATa = [
+  { label: 'Email address', type: 'email', isOptional: false, isHidden: false },
+  {
+    label: 'Gender',
+    type: 'radio',
+    value: ['M (Male)', 'F (Female)', 'X (Indeterminate/Intersex/Unspecified)'],
+    isOptional: true,
+  },
+  {
+    label: 'State',
+    type: 'select',
+    value: ['NSW', 'QLD', 'SA', 'TAS', 'VIC', 'WA', 'NT', 'ACT'],
+    default: 'ACT',
+  },
+  { label: 'Contact number', type: 'telephone' },
+  { type: 'hidden', value: 1573680446850, isHidden: true },
+];
+
+const Form = ({ data, formState, setFormField, validate }) => {
   useEffect(() => {
     // Set initial form state
     data.forEach(field => {
@@ -92,20 +110,27 @@ const Form = ({ data, formState, setFormField }) => {
   };
 
   return (
-    <form>
-      {renderFormFields()}
-      <button
-        type="submit"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    <div>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          validate({ formState, source: data });
+        }}
       >
-        Button
-      </button>
-    </form>
+        {renderFormFields()}
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Button
+        </button>
+      </form>
+    </div>
   );
 };
 
 const mapStateToProps = state => {
-  const formState = getFormState(state);
+  const { formState } = getFormState(state);
   return { formState };
 };
 
@@ -113,6 +138,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       setFormField,
+      validate: validateForm,
     },
     dispatch
   );
