@@ -3,7 +3,9 @@ import dynamic from 'next/dynamic';
 import { connect } from 'react-redux';
 import { getFormState } from '../reducer';
 
-const ReactJson = dynamic(() => import('react-json-view'));
+const ReactJson = dynamic(() => import('react-json-view'), {
+  ssr: false,
+});
 
 const Output = ({ validated }) => {
   return (
