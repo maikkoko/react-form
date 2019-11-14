@@ -16,18 +16,18 @@ const Form = ({ data, formState, setFormField, validate }) => {
   }, []);
 
   const renderFormFields = () => {
-    return data.map((field, index) => {
+    return data.map(field => {
       // Radio
       if (field.type === 'radio') {
         return (
-          <div key={index}>
+          <div key={field.label}>
             <label className="block text-gray-700 text-sm font-bold mb-2">
               {field.label}
             </label>
             <div className="flex radio-option">
               {field.value.map(option => {
                 return (
-                  <div className="mr-2">
+                  <div key={option} className="mr-2">
                     <input
                       type={field.type}
                       name={field.label}
@@ -55,7 +55,7 @@ const Form = ({ data, formState, setFormField, validate }) => {
       // Select
       if (field.type === 'select') {
         return (
-          <div key={index}>
+          <div key={field.label}>
             <label className="block text-gray-700 text-sm font-bold mb-2">
               {field.label}
             </label>
@@ -65,7 +65,7 @@ const Form = ({ data, formState, setFormField, validate }) => {
               onChange={e => setFormField(field.label, e.target.value)}
             >
               {field.value.map(option => (
-                <option>{option}</option>
+                <option key={option}>{option}</option>
               ))}
             </select>
           </div>
@@ -74,7 +74,7 @@ const Form = ({ data, formState, setFormField, validate }) => {
 
       // Text/Email, etc
       return (
-        <div key={index}>
+        <div key={field.label || field.type}>
           <label className="block text-gray-700 text-sm font-bold mb-2">
             {field.label}
           </label>
@@ -102,9 +102,9 @@ const Form = ({ data, formState, setFormField, validate }) => {
       {renderFormFields()}
       <button
         type="submit"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-10 rounded"
       >
-        Button
+        Submit
       </button>
     </form>
   );

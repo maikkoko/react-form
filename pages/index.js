@@ -11,19 +11,27 @@ const Index = props => {
   return (
     <div className="container mx-auto">
       <p className="text-2xl text-center mt-3 mb-4">Form</p>
-      <div className="flex">
-        {!data || data.statusCode === 500 ? (
-          <>
-            <p>Oops! Something went wrong!</p>
-            <p>Please refresh the page.</p>
-          </>
-        ) : (
-          <>
+      {!data || data.statusCode === 500 ? (
+        <div
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
+          <strong className="font-bold">Holy smokes!</strong>
+          <span className="block sm:inline pl-2">
+            Something seriously bad happened!
+          </span>
+          <p>Hit refresh to go back to previous page.</p>
+        </div>
+      ) : (
+        <div className="flex">
+          <div className="w-1/2 p-2">
             <Form data={data} />
+          </div>
+          <div className="w-1/2 p-2">
             <Output />
-          </>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
