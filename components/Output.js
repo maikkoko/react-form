@@ -7,7 +7,7 @@ const ReactJson = dynamic(() => import('react-json-view'));
 
 const Output = ({ validated }) => {
   return (
-    <div>
+    <div className="w-auto">
       <ReactJson src={validated} theme="monokai" style={{ width: '100%' }} />
     </div>
   );

@@ -8,19 +8,22 @@ import '../styles/index.css';
 const Index = props => {
   const { data } = props;
 
-  if (!data || data.statusCode === 500) {
-    return (
-      <div className="container mx-auto">
-        <p>Oops! Something went wrong!</p>
-        <p>Please refresh the poge.</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="container mx-auto flex">
-      <Form data={data} />
-      <Output />
+    <div className="container mx-auto">
+      <p className="text-2xl text-center mt-3 mb-4">Form</p>
+      <div className="flex">
+        {!data || data.statusCode === 500 ? (
+          <>
+            <p>Oops! Something went wrong!</p>
+            <p>Please refresh the page.</p>
+          </>
+        ) : (
+          <>
+            <Form data={data} />
+            <Output />
+          </>
+        )}
+      </div>
     </div>
   );
 };

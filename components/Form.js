@@ -92,22 +92,21 @@ const Form = ({ data, formState, setFormField, validate }) => {
   };
 
   return (
-    <div>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          validate({ formState, source: data });
-        }}
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+        validate({ formState, source: data });
+      }}
+      className="w-auto"
+    >
+      {renderFormFields()}
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
-        {renderFormFields()}
-        <button
-          type="submit"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Button
-        </button>
-      </form>
-    </div>
+        Button
+      </button>
+    </form>
   );
 };
 
