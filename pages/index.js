@@ -18,7 +18,7 @@ const Index = props => {
         >
           <strong className="font-bold">Holy smokes!</strong>
           <span className="block sm:inline pl-2">
-            Something seriously bad happened!
+            The form server returned an error
           </span>
           <p>Hit refresh to go back to previous page.</p>
         </div>
