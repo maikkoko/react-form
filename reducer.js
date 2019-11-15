@@ -6,6 +6,7 @@ import { validateEmail, validateContactNumber } from './helpers';
 const DEFAULT_STATE = {
   formState: {},
   validated: [],
+  isSubmitting: false,
 };
 
 const { action: formAction, getState: getFormState } = namespaceConfig(
@@ -25,37 +26,47 @@ export const setFormField = formAction(
   }
 );
 
-export const validateForm = formAction(
-  'VALIDATE_FORM',
-  (state, { formState, source }) => {
-    let validated = [];
+const validateInit = formAction('VALIDATE_INIT', state => ({
+  ...state,
+  isSubmitting: true,
+  validated: [],
+}));
 
-    source.forEach(field => {
-      const key = field.label || field.type;
-      let isValid = true;
+const validateSuccess = formAction('VALIDATE_SUCCESS', (state, validated) => ({
+  ...state,
+  validated,
+  isSubmitting: false,
+}));
 
-      if (!field.isOptional) {
-        isValid = !(!formState[key] || formState[key].length === 0);
-      }
+export const validateForm = ({ formState, source }) => async dispatch => {
+  dispatch(validateInit());
 
-      if (field.type === 'email') {
-        isValid = validateEmail(formState[key]);
-      }
+  let validated = [];
+  source.forEach(field => {
+    const key = field.label || field.type;
+    let isValid = true;
 
-      if (field.type === 'telephone') {
-        isValid = validateContactNumber(formState[key]);
-      }
+    if (!field.isOptional) {
+      isValid = !(!formState[key] || formState[key].length === 0);
+    }
 
-      validated.push({
-        isValid,
-        label: key,
-        value: formState[key],
-      });
+    if (field.type === 'email') {
+      isValid = validateEmail(formState[key]);
+    }
+
+    if (field.type === 'telephone') {
+      isValid = validateContactNumber(formState[key]);
+    }
+
+    validated.push({
+      isValid,
+      label: key,
+      value: formState[key],
     });
+  });
 
-    return {
-      ...state,
-      validated,
-    };
-  }
-);
+  // wait 1 second to mock async request
+  await new Promise((resolve, reject) => setTimeout(resolve, 1000));
+
+  dispatch(validateSuccess(validated));
+};

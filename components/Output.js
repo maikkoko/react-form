@@ -7,18 +7,22 @@ const ReactJson = dynamic(() => import('react-json-view'), {
   ssr: false,
 });
 
-const Output = ({ validated }) => {
+const Output = ({ validated, isSubmitting }) => {
   return (
     <div className="w-auto">
-      <ReactJson src={validated} theme="monokai" style={{ width: '100%' }} />
+      {isSubmitting ? (
+        <p>Mocking server submission...</p>
+      ) : (
+        <ReactJson src={validated} theme="monokai" style={{ width: '100%' }} />
+      )}
     </div>
   );
 };
 
 const mapStateToProps = state => {
-  const { validated } = getFormState(state);
+  const { validated, isSubmitting } = getFormState(state);
 
-  return { validated };
+  return { validated, isSubmitting };
 };
 
 export default connect(mapStateToProps)(Output);
