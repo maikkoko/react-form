@@ -38,6 +38,7 @@ const Index = props => {
 
 Index.getInitialProps = async ({ store }) => {
   try {
+    // Fetch data on server side to get around cors
     const result = await fetch(
       'https://ansible-template-engine.herokuapp.com/form'
     );
