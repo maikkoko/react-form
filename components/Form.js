@@ -15,77 +15,71 @@ const Form = ({ data, formState, setFormField, validate }) => {
     });
   }, []);
 
+  const inputComponent = field => {
+    // Radio
+    if (field.type === 'radio') {
+      return (
+        <div className="flex radio-option">
+          {field.value.map(option => {
+            return (
+              <div key={option} className="mr-2">
+                <input
+                  type={field.type}
+                  name={field.label}
+                  value={option}
+                  checked={formState[field.label] === option}
+                  onChange={e => setFormField(field.label, option)}
+                />
+                <span className="ml-2">{option}</span>
+              </div>
+            );
+          })}
+
+          <style jsx>
+            {`
+              .radio-option: {
+                align-items: center;
+              }
+            `}
+          </style>
+        </div>
+      );
+    }
+
+    // Select
+    if (field.type === 'select') {
+      return (
+        <select
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          value={formState[field.label] || ''}
+          onChange={e => setFormField(field.label, e.target.value)}
+        >
+          {field.value.map(option => (
+            <option key={option}>{option}</option>
+          ))}
+        </select>
+      );
+    }
+
+    // Text/Email, etc
+    return (
+      <input
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        type={field.type}
+        value={formState[field.label] || ''}
+        onChange={e => setFormField(field.label || field.type, e.target.value)}
+      />
+    );
+  };
+
   const renderFormFields = () => {
     return data.map(field => {
-      // Radio
-      if (field.type === 'radio') {
-        return (
-          <div key={field.label}>
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              {field.label}
-            </label>
-            <div className="flex radio-option">
-              {field.value.map(option => {
-                return (
-                  <div key={option} className="mr-2">
-                    <input
-                      type={field.type}
-                      name={field.label}
-                      value={option}
-                      checked={formState[field.label] === option}
-                      onChange={e => setFormField(field.label, option)}
-                    />
-                    <span className="ml-2">{option}</span>
-                  </div>
-                );
-              })}
-
-              <style jsx>
-                {`
-                  .radio-option: {
-                    align-items: center;
-                  }
-                `}
-              </style>
-            </div>
-          </div>
-        );
-      }
-
-      // Select
-      if (field.type === 'select') {
-        return (
-          <div key={field.label}>
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              {field.label}
-            </label>
-            <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              value={formState[field.label] || ''}
-              onChange={e => setFormField(field.label, e.target.value)}
-            >
-              {field.value.map(option => (
-                <option key={option}>{option}</option>
-              ))}
-            </select>
-          </div>
-        );
-      }
-
-      // Text/Email, etc
       return (
         <div key={field.label || field.type}>
           <label className="block text-gray-700 text-sm font-bold mb-2">
             {field.label}
           </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type={field.type}
-            value={formState[field.label] || ''}
-            onChange={e =>
-              setFormField(field.label || field.type, e.target.value)
-            }
-          />
+          {inputComponent(field)}
         </div>
       );
     });
